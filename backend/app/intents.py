@@ -1,17 +1,86 @@
 import json
 import os
 import re
+import unicodedata
 from typing import Dict, Any
 
 from app.schemas import IntentExtractionResult
 
 
 INTENT_KEYWORDS = {
-    "towel_request": ["towel", "towels", "extra towel"],
-    "food_order": ["food", "breakfast", "lunch", "dinner", "pizza", "burger", "fries", "drink", "drinks"],
-    "maintenance_request": ["fix", "broken", "repair", "leak", "light", "ac", "air conditioner", "toilet", "sink"],
-    "room_service": ["room service", "send", "bring", "deliver"],
-    "housekeeping": ["clean", "cleaning", "housekeeping", "make up the room", "make up room"],
+    "towel_request": [
+        "towel",
+        "towels",
+        "extra towel",
+        "serviette",
+        "serviettes",
+        "handtuch",
+        "handtucher",
+        "handtuecher",
+        "asciugamano",
+        "asciugamani",
+        "toalla",
+        "toallas",
+    ],
+    "food_order": [
+        "food",
+        "breakfast",
+        "lunch",
+        "dinner",
+        "pizza",
+        "burger",
+        "fries",
+        "drink",
+        "drinks",
+        "commande de dîner",
+        "bestellung",
+        "ordine di cena",
+        "pedido de cena",
+    ],
+    "maintenance_request": [
+        "fix",
+        "broken",
+        "repair",
+        "leak",
+        "light",
+        "ac",
+        "air conditioner",
+        "toilet",
+        "sink",
+        "climatisation",
+        "climatisation ne fonctionne pas",
+        "klimaanlage",
+        "klimaanlage funktioniert nicht",
+        "aria condizionata",
+        "aria condizionata non funziona",
+        "aire acondicionado",
+        "aire acondicionado no funciona",
+        "ampoule",
+        "lampadina",
+        "bombilla",
+    ],
+    "room_service": [
+        "room service",
+        "send",
+        "bring",
+        "deliver",
+        "service en chambre",
+        "zimmerservice",
+        "servizio in camera",
+        "servicio a la habitacion",
+    ],
+    "housekeeping": [
+        "clean",
+        "cleaning",
+        "housekeeping",
+        "make up the room",
+        "make up room",
+        "menage",
+        "zimmer reinigen",
+        "pulizia",
+        "limpio",
+        "pulito",
+    ],
 }
 
 INTENT_TO_DEPARTMENT = {
@@ -22,6 +91,15 @@ INTENT_TO_DEPARTMENT = {
     "housekeeping": "housekeeping",
     "general_request": "front_desk",
 }
+
+
+def _normalize_text(text: str) -> str:
+    normalized = unicodedata.normalize("NFKD", text or "")
+    normalized = "".join(character for character in normalized if not unicodedata.combining(character))
+    normalized = normalized.lower().strip()
+    normalized = re.sub(r"[^\w\s]", " ", normalized)
+    normalized = re.sub(r"\s+", " ", normalized)
+    return normalized
 
 
 def _detect_quantity(text: str) -> int | None:
@@ -60,7 +138,7 @@ def _detect_items(text: str, intent: str) -> list[str]:
 
 
 def _heuristic_extract(text: str) -> Dict[str, Any]:
-    normalized = text.lower().strip()
+    normalized = _normalize_text(text)
     selected_intent = "general_request"
     confidence = 0.55
 

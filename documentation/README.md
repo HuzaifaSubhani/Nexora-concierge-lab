@@ -11,7 +11,7 @@ Quick start (PowerShell):
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r backend\requirements.txt
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8005
+uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 # Frontend (separate shell)
 cd frontend
@@ -19,15 +19,15 @@ npm run dev
 
 ## Testing
 
-1. Open http://localhost:3001
+1. Open http://localhost:3000
 2. Verify backend status shows pong
 3. Click "Start Recording"
 4. Speak clearly (e.g., "I need a towel")
 5. Click "Stop"
 6. See transcription JSON with text, confidence, language
 
-Backend runs on http://localhost:8005
-Frontend runs on http://localhost:3001
+Backend runs on http://localhost:8000
+Frontend runs on http://localhost:3000
 
 ## Note
 First transcription may take 30-60s (faster-whisper downloads tiny model ~39MB)

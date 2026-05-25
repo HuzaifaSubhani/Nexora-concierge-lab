@@ -68,3 +68,13 @@ class TaskRecord(BaseModel):
     raw_text: str
     source: str
     created_at: str
+
+
+class TranslationRequest(BaseModel):
+    text: str = Field(min_length=1)
+    src_lang: Optional[str] = None
+
+
+class TranslationResult(BaseModel):
+    translation: str
+    translation_language: str = "en"
