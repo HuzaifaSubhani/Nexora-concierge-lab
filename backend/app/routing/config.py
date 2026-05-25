@@ -12,8 +12,10 @@ DEFAULT_LANGUAGE_MODEL_MAP: Dict[str, str] = {
     "th": "qwen3:8b",
     "ar": "qwen3:8b",
     "fr": "qwen3:8b",
+    "it": "qwen3:8b",
     "es": "qwen3:8b",
     "de": "qwen3:8b",
+    "nl": "qwen3:8b",
     "zh": "qwen3:8b",
     "ja": "qwen3:8b",
 }
@@ -25,8 +27,10 @@ DEFAULT_LANGUAGE_GENERATION_MAP: Dict[str, Dict[str, Any]] = {
     "th": {"think": False, "temperature": 0.5, "top_k": 30, "top_p": 0.9, "num_predict": 72},
     "ar": {"think": False, "temperature": 0.55, "top_k": 30, "top_p": 0.9, "num_predict": 64},
     "fr": {"think": False, "temperature": 0.6, "top_k": 30, "top_p": 0.9, "num_predict": 56},
+    "it": {"think": False, "temperature": 0.6, "top_k": 30, "top_p": 0.9, "num_predict": 56},
     "es": {"think": False, "temperature": 0.6, "top_k": 30, "top_p": 0.9, "num_predict": 56},
     "de": {"think": False, "temperature": 0.6, "top_k": 30, "top_p": 0.9, "num_predict": 56},
+    "nl": {"think": False, "temperature": 0.6, "top_k": 30, "top_p": 0.9, "num_predict": 56},
     "zh": {"think": False, "temperature": 0.5, "top_k": 30, "top_p": 0.9, "num_predict": 72},
     "ja": {"think": False, "temperature": 0.5, "top_k": 30, "top_p": 0.9, "num_predict": 72},
 }
@@ -39,8 +43,10 @@ DEFAULT_TRANSLATION_MODEL_MAP: Dict[str, str] = {
     "th": "Helsinki-NLP/opus-mt-th-en",
     "ar": "Helsinki-NLP/opus-mt-ar-en",
     "fr": "Helsinki-NLP/opus-mt-fr-en",
+    "it": "Helsinki-NLP/opus-mt-it-en",
     "es": "Helsinki-NLP/opus-mt-es-en",
     "de": "Helsinki-NLP/opus-mt-de-en",
+    "nl": "Helsinki-NLP/opus-mt-nl-en",
     "zh": "Helsinki-NLP/opus-mt-zh-en",
     "ja": "Helsinki-NLP/opus-mt-ja-en",
 }

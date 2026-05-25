@@ -65,14 +65,27 @@ class InteractionRouteResult:
     """Result returned by the orchestration layer for voice interaction."""
 
     session_id: str
+    state: str
+    detected_language_name: str
+    confirmed_language_name: Optional[str]
+    language_confirmed: bool
     source_language: str
     source_language_confidence: float
     language_locked: bool
     transcription: str
+    caller_text_original: str
+    caller_text_english: str
     translated_transcription: str
     processing_language: str
     response_text: str
     response_language: str
+    response_english: str
+    response_final_language: str
+    intent: str
+    confidence: str
+    action: str
+    tts_language: str
+    notes: str
     translation_used: bool
     translation_model: str
     requested_model: str

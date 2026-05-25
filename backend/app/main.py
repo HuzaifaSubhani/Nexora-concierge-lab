@@ -68,11 +68,23 @@ class DetectLanguageRequest(BaseModel):
 class DetectLanguageResponse(BaseModel):
     """Response with detected language and confidence."""
     session_id: str
+    state: str = "LANGUAGE_DETECTION"
     detected_language: str
+    detected_language_name: Optional[str] = None
+    confirmed_language: Optional[str] = None
+    language_confirmed: bool = False
     confidence: float
     language_locked: bool
     confirmation_required: bool = True
     confirmation_prompt: Optional[str] = None
+    caller_text_original: str = ""
+    caller_text_english: str = ""
+    intent: str = "Unknown"
+    response_english: str = ""
+    response_final_language: str = ""
+    action: str = "ask_language_confirmation"
+    tts_language: str = "en"
+    notes: str = ""
 
 
 class ConfirmLanguageRequest(BaseModel):
@@ -85,10 +97,20 @@ class ConfirmLanguageRequest(BaseModel):
 class ConfirmLanguageResponse(BaseModel):
     """Response after language confirmation/rejection."""
     session_id: str
+    state: str = "LANGUAGE_CONFIRMATION"
     selected_language: str
+    detected_language: Optional[str] = None
+    confirmed_language: Optional[str] = None
+    language_confirmed: bool = False
     language_locked: bool
     message: str
     voice_prompt: Optional[str] = None
+    response_english: str = ""
+    response_final_language: str = ""
+    intent: str = "Unknown"
+    action: str = "ask_language_confirmation"
+    tts_language: str = "en"
+    notes: str = ""
 
 
 class SelectLanguageRequest(BaseModel):
@@ -115,11 +137,24 @@ class VoiceInteractionRequest(BaseModel):
 class VoiceInteractionResponse(BaseModel):
     """Response with LLM-generated reply."""
     session_id: str
+    state: str
+    detected_language: str
+    confirmed_language: Optional[str]
+    language_confirmed: bool
     transcription: str
+    caller_text_original: str
+    caller_text_english: str
     translated_transcription: str
     response: str
     language: str
     response_language: str
+    response_english: str
+    response_final_language: str
+    intent: str
+    confidence: str
+    action: str
+    tts_language: str
+    notes: str
     source_language: str
     requested_model: str
     selected_model: str
@@ -408,11 +443,23 @@ async def detect_language_route(payload: DetectLanguageRequest):
 
     return DetectLanguageResponse(
         session_id=payload.session_id,
+        state=outcome["state"],
         detected_language=outcome["detected_language"],
+        detected_language_name=outcome["detected_language_name"],
+        confirmed_language=outcome["confirmed_language"],
+        language_confirmed=outcome["language_confirmed"],
         confidence=outcome["confidence"],
         language_locked=outcome["language_locked"],
         confirmation_required=outcome["confirmation_required"],
         confirmation_prompt=outcome["confirmation_prompt"],
+        caller_text_original=outcome["caller_text_original"],
+        caller_text_english=outcome["caller_text_english"],
+        intent=outcome["intent"],
+        response_english=outcome["response_english"],
+        response_final_language=outcome["response_final_language"],
+        action=outcome["action"],
+        tts_language=outcome["tts_language"],
+        notes=outcome["notes"],
     )
 
 
@@ -429,10 +476,20 @@ async def confirm_language_route(payload: ConfirmLanguageRequest):
     )
     return ConfirmLanguageResponse(
         session_id=outcome["session_id"],
+        state=outcome["state"],
         selected_language=outcome["selected_language"],
+        detected_language=outcome["detected_language"],
+        confirmed_language=outcome["confirmed_language"],
+        language_confirmed=outcome["language_confirmed"],
         language_locked=outcome["language_locked"],
         message=outcome["message"],
         voice_prompt=outcome.get("voice_prompt"),
+        response_english=outcome["response_english"],
+        response_final_language=outcome["response_final_language"],
+        intent=outcome["intent"],
+        action=outcome["action"],
+        tts_language=outcome["tts_language"],
+        notes=outcome["notes"],
     )
 
 
@@ -469,11 +526,24 @@ async def voice_interact_route(payload: VoiceInteractionRequest):
 
     return VoiceInteractionResponse(
         session_id=routed.session_id,
+        state=routed.state,
+        detected_language=routed.detected_language_name,
+        confirmed_language=routed.confirmed_language_name,
+        language_confirmed=routed.language_confirmed,
         transcription=routed.transcription,
+        caller_text_original=routed.caller_text_original,
+        caller_text_english=routed.caller_text_english,
         translated_transcription=routed.translated_transcription,
         response=routed.response_text,
         language=routed.processing_language,
         response_language=routed.response_language,
+        response_english=routed.response_english,
+        response_final_language=routed.response_final_language,
+        intent=routed.intent,
+        confidence=routed.confidence,
+        action=routed.action,
+        tts_language=routed.tts_language,
+        notes=routed.notes,
         source_language=routed.source_language,
         requested_model=routed.requested_model,
         selected_model=routed.selected_model,

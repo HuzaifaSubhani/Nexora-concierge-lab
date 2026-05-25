@@ -13,6 +13,8 @@ def test_orchestrator_detect_language_updates_session():
             transcription="Hello, I need room service please.",
         )
         assert result["detected_language"] == "en"
+        assert result["state"] == "LANGUAGE_CONFIRMATION"
+        assert result["action"] == "ask_language_confirmation"
         assert result["confidence"] >= 50.0
         assert result["language_locked"] is False
         assert bool(result.get("confirmation_prompt")) is True
@@ -24,6 +26,8 @@ def test_orchestrator_detect_language_updates_session():
         assert len(updated.transcription_history) >= 1
 
         confirm = orchestrator.confirm_language_for_session(session.session_id, confirm=True)
+        assert confirm["state"] == "LISTENING_TO_QUERY"
+        assert confirm["action"] == "ask_query"
         assert confirm["language_locked"] is True
         assert confirm["selected_language"] == "en"
     finally:

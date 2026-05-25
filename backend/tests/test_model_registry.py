@@ -34,4 +34,6 @@ def test_resolve_generation_profile():
 
 def test_resolve_translation_model():
     assert resolve_translation_model_for_language("en") == "direct"
+    assert resolve_translation_model_for_language("it") == "Helsinki-NLP/opus-mt-it-en"
+    assert resolve_translation_model_for_language("nl") == "Helsinki-NLP/opus-mt-nl-en"
     assert resolve_translation_model_for_language("unknown_lang") == "auto"
